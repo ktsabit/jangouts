@@ -12,10 +12,35 @@ export const createEventsService = () => {
   let user = null;
   // Room currently in use
   let room = null;
-  // eventsSubject stores a reference to window.Rx object
-  let eventsSubject = null;
+  // TODO eventsSubject stores a reference to window.Rx object
+  let roomSubject = null;
   // object to return
   let that = {};
+
+  /*
+   * TODO Subject to which the plugins must subscribe in order to react to the
+   * emitted events.
+   */
+  that.getRoomSubject = function() {
+    return roomSubject;
+  };
+
+  /**
+   *  TODOEmits event after adding timestamp and status information to it
+   *  @param {object} event - carries 'type' and 'data' for event
+   */
+  that.roomEvent = function(event, payload) {
+    if (roomSubject === null || roomSubject === undefined) {
+      console.error('Event emitter is not configured. Event not emitted');
+    } else {
+      //roomSubject.next({event, payload});
+      roomSubject.next(event, payload);
+    }
+  };
+
+  that.auditEvent = function(event, payload) {
+    console.debug('TODO: bring audit events back - ' + event);
+  };
 
   /*
    * Sets the information about the current signed-in user that will be
@@ -31,14 +56,6 @@ export const createEventsService = () => {
    */
   that.setRoom = function(value) {
     room = value;
-  };
-
-  /*
-   * Subject to which the plugins must subscribe in order to react to the
-   * emitted events.
-   */
-  that.getEventsSubject = function() {
-    return eventsSubject;
   };
 
   /**
@@ -60,13 +77,13 @@ export const createEventsService = () => {
   /*
    * Initializes the events system.
    */
-  const initEventsSubject = function() {
-    eventsSubject = new Subject();
-    if (eventsSubject === null || eventsSubject === undefined) {
+  const initSubjects = function() {
+    roomSubject = new Subject();
+    if (roomSubject === null || roomSubject === undefined) {
       console.error('Could not load rx.js! Event emitter will not work.');
     }
   };
 
-  initEventsSubject();
+  initSubjects();
   return that;
 };

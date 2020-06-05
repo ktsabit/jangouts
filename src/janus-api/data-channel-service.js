@@ -27,38 +27,32 @@ export const createDataChannelService = (feedsService, logService, eventsService
       }
     } else if (type === 'muteRequest') {
       feed = feedsService.find(content.target);
-      const source = feedsService.find(remoteId);
+
+      eventsService.roomEvent('muteFeed', { id: feed.id, requesterId: remoteId });
+
       if (feed.isPublisher) {
-        feed.setEnabledChannel('audio', false, {
-          after: function() {
-            eventsService.emitEvent({
-              type: 'muted',
-              data: { cause: 'request', source: { id: source.id, display: source.display } }
-            });
-          }
-        });
+        feed.setEnabledChannel('audio', false);
       }
+      /*
       // Log the event
       logEntry = createLogEntry('muteRequest', {
         source: feedsService.find(remoteId),
         target: feed
       });
       logService.add(logEntry);
+      */
     } else if (type === 'statusUpdate') {
       feed = feedsService.find(content.source);
       if (feed && !feed.isPublisher) {
+        /*
         eventsService.emitEvent({
           type: 'statusUpdate',
           data: content
-        });
+        });*/
         feed.setStatus(content.status);
       }
     } else if (type === 'speakingSignal') {
-      const { source: feedId, speaking } = content;
-      eventsService.emitEvent({
-        type: 'participantSpeaking',
-        data: { feedId, speaking }
-      });
+      eventsService.roomEvent('updateFeed', { id: feedId, speaking: content.speaking });
     } else {
       console.log('Unknown data type: ' + type);
     }

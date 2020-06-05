@@ -132,7 +132,7 @@ export const createActionService = (
       // actually muted) raise a signal
       if (type === 'audio' && feed.isPublisher) {
         callback = function() {
-          eventsService.emitEvent({ type: 'muted', data: { cause: 'user' } });
+          eventsService.roomEvent('muteFeed', { id: feed.id, requesterId: feed.id });
         };
       }
       feed.setEnabledChannel(type, false, { after: callback });

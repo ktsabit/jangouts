@@ -288,15 +288,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
           dataChannelService.sendStatus(that, { exclude: 'picture' });
 
           // send 'channel' event with status (enabled or disabled)
-          eventsService.emitEvent({
-            type: 'channel',
-            data: {
-              source: that.id,
-              channel: type,
-              status: enabled,
-              peerconnection: that.connection.pluginHandle.webrtcStuff.pc
-            }
-          });
+          eventsService.auditEvent('channel');
         }
       });
       if (type === 'video') {
@@ -323,10 +315,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       if (val === false) {
         silentSince = Date.now();
       }
-      eventsService.emitEvent({
-        type: 'participantSpeaking',
-        data: { feedId: that.id, speaking: speaking }
-      });
+      eventsService.roomEvent('updateFeed', { id: that.id, speaking });
       dataChannelService.sendSpeakingSignal(that);
     }
   }
@@ -369,6 +358,18 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
   that.setDisplay = function(val) {
     that.display = val;
   };
+
+  that.getName = function() {
+    return that.getDisplay();
+  };
+
+  /**
+   * Sets the name for publisher
+   * @param {string} - val - new display
+   */
+  that.setName = function(val) {
+    that.setDisplay(val);
+  };
   /**
    * Reads the representation of the local feed in order to send it to the
    * remote peers.
@@ -383,7 +384,7 @@ export const createFeedFactory = (dataChannelService, eventsService) => (attrs) 
       options.exclude = [];
     }
 
-    var attrs = ['audioEnabled', 'videoEnabled', 'speaking', 'picture', 'display'];
+    var attrs = ['audioEnabled', 'videoEnabled', 'speaking', 'picture', 'name'];
     var status = {};
 
     attrs.forEach(function(attr) {

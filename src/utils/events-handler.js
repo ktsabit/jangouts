@@ -7,8 +7,9 @@
 
 import { actionCreators as actions } from '../state/ducks';
 
-export const createEventsHandler = (dispatchFn) => (event) => {
+export const createEventsHandler = (dispatchFn) => (event, payload) => {
   const handlers = {
+/*
     error: ({ error }) => {
       dispatchFn({ type: 'error' });
     },
@@ -59,16 +60,17 @@ export const createEventsHandler = (dispatchFn) => (event) => {
     screenshare: (event) => {
       dispatchFn(actions.notifications.notifyEvent(event));
     }
+*/
   };
 
-  const defaultHandler = (event) => {
-    console.log('Unhandled event:', event.type, event);
+  const defaultHandler = (event, payload) => {
+    console.debug('Unhandled event:', event, payload);
   };
 
-  const handlerFn = handlers[event.type];
+  const handlerFn = handlers[event];
   if (handlerFn !== undefined) {
-    handlerFn(event);
+    handlerFn(payload);
   } else {
-    defaultHandler(event);
+    defaultHandler(event, payload);
   }
 };

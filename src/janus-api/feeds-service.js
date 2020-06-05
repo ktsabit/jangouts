@@ -70,11 +70,15 @@ export const createFeedsService = (eventsService) => {
    * @param {Boolean} options.main - if feed is main one
    */
   that.add = function(feed, options) {
+    let local = false;
+
     feeds[feed.id] = feed;
-    eventsService.emitEvent({ type: 'addFeed', data: feed });
     if (options && options.main) {
       mainFeed = feed;
+      local = true;
     }
+    eventsService.roomEvent('createParticipant', { id: feed.id, name: feed.getName(), local });
+    eventsService.roomEvent('createFeed', { participantId: feed.id, ...feed.eventAttrs() });
   };
 
   /**
@@ -82,7 +86,8 @@ export const createFeedsService = (eventsService) => {
    */
   that.destroy = function(id) {
     delete feeds[id];
-    eventsService.emitEvent({ type: 'removeFeed', data: { feedId: id } });
+    eventsService.roomEvent('destroyFeed', { id });
+    eventsService.roomEvent('destroyParticipant', { id });
     if (mainFeed && id === mainFeed.id) {
       mainFeed = null;
     }

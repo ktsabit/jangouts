@@ -1,0 +1,91 @@
+dataChannelService (no documented, not really needed)
+  -> receiveMessage
+    > types => 'chatMsg', 'muteRequest', 'statusUpdate', 'speakingSignal'
+  -> sendMuteRequest
+  -> sendStatus
+  -> sendSpeakingSignal
+  -> sendChatMessage
+
+eventsService (fully documented)
+  Permite que los plugin se suscriban a un subject para recibir eventos
+  Por otro lado, se ofrece emitEvent para emitir eventos
+
+feedsService (fully documented)
+  -> find (y familia)
+  -> allFeeds (y familia)
+  -> add
+  -> destroy
+
+logService (not documented, not really needed)
+  -> allEntries
+  -> add(entry)
+
+roomService (partially documented)
+  /**
+   * Connects to the Janus server
+   *
+   * @returns {Promise}
+   */
+  that.connect = () => {...}
+
+  /**
+   * Returns the list of rooms from the server
+   *
+   * This function makes sures that a connection already exists, but the real work is done by the
+   * doGetRooms function.
+   *
+   * @returns {Promise<Array>} List of rooms from the server
+   */
+  that.getRooms = () => {...}
+
+  // Enter the room
+  that.enter = (username, pin) => {...}
+  that.leave = function leave() {...}
+  that.setRoom = function(room) {...}
+  that.getRoom = function() {...}
+  that.subscribeToFeeds = function(list) {...}
+  that.subscribeToFeed = function(id, display) {...}
+  that.publishScreen = function(videoSource) {...}
+  that.unPublishFeed = function(feedId) {...}
+  that.ignoreFeed = function(feedId) {...}
+  that.reconnectFeed = function(feedId) {...}
+  that.toggleChannel = function(type, feed) {...}
+
+  /**
+   * Broadcast status information of all our feeds when a data channel is
+   * established.
+   *
+   * To increase the chances of the info to be received, it sends the most
+   * important information right away and the whole status some seconds after.
+   * Hacky and dirty, we know.
+   */
+  that.sendStatus = function() {...}
+
+actionService (not documented)
+  that.enterRoom = function(feedId, display, connection) {...}
+  that.leaveRoom = function() {...}
+  that.publishScreen = function(feedId, display, connection) {...}
+  that.remoteJoin = function(feedId, display, connection) {...}
+  that.destroyFeed = function(feedId) {...}
+  that.unpublishFeed = function(feedId) {...}
+  that.ignoreFeed = function(feedId) {...}
+  that.reconnectFeed = function(feedId, connection) {...}
+  that.writeChatMessage = function(text) {...}
+  that.toggleChannel = function(type, feed) {...}
+  that.setMedia = function(type, boolval) {...}
+
+
+Notas de Janus
+
+When a peer attaches to a Janus plugin, a handle is created
+
+One peer <==> Several WebRTC PeerConnections
+  potentially 1 PeerConnection for publishing and N on for subscriptions from other peers
+
+Thus, each peer attaches several times to the plugin
+  one active handle to manage the relation with the plugin
+    -> joining, leaving, muting/unmuting, publishing, receiving events
+  needs to open a new one each time it wants to subscribe to a feed from another publisher participant
+    -> only to provide a context in which creating the recvonly PeerConnection for the subscription
+
+Publishers are those participant handles that are able (although may choose not to) publish media in the room, and as such become feeds that you can subscribe to.

@@ -57,7 +57,7 @@ export default (function() {
     );
 
     if (handler) {
-      that.getEventsSubject().subscribe(handler);
+      that.getRoomSubject().subscribe(handler);
     }
   };
 
@@ -69,7 +69,7 @@ export default (function() {
   that.publishScreen = () => that.roomService.publishScreen('screen');
   that.unpublishFeed = (feedId) => that.roomService.unPublishFeed(feedId);
   that.leaveRoom = () => that.roomService.leave();
-  that.getEventsSubject = () => that.eventsService.getEventsSubject();
+  that.getRoomSubject = () => that.eventsService.getRoomSubject();
   that.sendMessage = (text) => that.actionService.writeChatMessage(text);
   that.getFeedStream = (feedId) => {
     let feed = that.feedsService.find(feedId);
