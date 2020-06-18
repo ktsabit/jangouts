@@ -30,7 +30,7 @@
     "build:css": "postcss src/styles/index.css -o src/styles.css",
     "watch:css": "postcss -w src/styles/index.css -o src/styles.css",
     "start": "run-p watch:css start:react",
-    "start:react": "react-scripts start",
+    "start:react": "EXTEND_ESLINT=true react-scripts start",
     "prebuild": "npm run build:css",
     "build": "react-scripts build",
     "test": "TZ=UTC react-scripts test",

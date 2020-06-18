@@ -36,29 +36,31 @@ function Classic() {
             </button>
           </Header>
         </div>
-        <div className="flex-1 pt-2 overflow-hidden grid gap-2 grid-rows-6 grid-cols-2 sm:grid-flow-col">
-          <Notifications
+        <div className="flex flex-row">
+        <div className="col-span-3 flex flex-col">
+          {/* <Notifications
             className="w-full absolute z-50 flex flex-col items-center"
-          />
+          /> */}
           <div
             className={classNames(
-              'flex p-1 justify-center overflow-hidden row-span-2 col-span-2 sm:row-span-3 sm:col-span-1',
-              !showChat && 'sm:row-span-6'
-            )}>
+              'row-span-1 flex justify-center bg-black',
+              !showChat && ''
+            )}> 
             <Speaker />
           </div>
           <div
             className={classNames(
-              'overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-3 sm:col-span-1 sm:border-t-0',
-              !showChat && 'row-span-4 sm:row-span-6'
+              'row-span-1 bg-blue-500',
+              !showChat && ''
             )}>
             <Participants />
           </div>
-          {showChat && (
-            <div className="overflow-y-auto row-span-2 col-span-2 border-t sm:row-span-6 sm:border-t-0 sm:border-l-2">
-              <Chat />
-            </div>
-          )}
+        </div>
+        {showChat && (
+          <div className="col-span-1 bg-yellow-500 ">
+            <Chat />
+          </div>
+        )}
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ import MessageForm from './MessageForm';
 
 function Chat() {
   return (
-    <div className="relative h-full pb-12">
+    <div className="">
       <MessagesList />
       <MessageForm />
     </div>

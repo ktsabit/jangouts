@@ -25,7 +25,7 @@ function MessageForm() {
   return (
     <form
       data-testid="chatbox"
-      className="flex absolute bottom-0 w-full h-12 p-1 bg-gray-100 border-t"
+      className="w-full h-12 p-1 bg-yellow-500 border-t"
       onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
       <input
         id="text"
