@@ -19,7 +19,7 @@ const Participants = () => {
   });
 
   return (
-    <div className="grid items-center grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
+    <div className="overflow-y-scroll grid items-center grid-cols-3 lg:grid-cols-5 gap-2 row-gap-3 p-2">
       {orderedParticipants.map((participant) => {
         let {
           id,

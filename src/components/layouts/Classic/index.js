@@ -13,16 +13,19 @@ import Speaker from '../../Speaker';
 import Participants from '../../Participants';
 import Chat from '../../Chat';
 import Notifications from '../../Notifications';
+import { LogOut } from '../../Room/Actions'
 
 import { classNames } from '../../../utils/common';
+
 
 function Classic() {
   const [showChat, setShowChat] = useState(true);
 
   return (
-    <div className="w-screen h-screen bg-primary-dark border-b-8 border-primary-dark">
-      <div className="h-full padding-b-4 flex flex-col bg-gray-100">
-        <div className="px-4 py-1 text-white font-bold border-b-4 border-secondary bg-primary-dark ">
+    <div className="w-screen h-screen">
+      <div className="h-full flex flex-col">
+        {/* Header */}
+        <div className="flex-none px-4 py-1 text-white font-bold border-b-4 border-secondary bg-primary-dark ">
           <Header>
             <button
               title={showChat ? 'Hide chat' : 'Show chat'}
@@ -36,31 +39,39 @@ function Classic() {
             </button>
           </Header>
         </div>
-        <div className="flex flex-row">
-        <div className="col-span-3 flex flex-col">
-          {/* <Notifications
+        {/* Content */}
+        <div className="flex flex-row antialiased h-screen">
+          <div
+            className={classNames(
+              'bg-geomain w-64 flex flex-col p-4'
+            )}>
+                <LogOut />
+          </div>
+          {/* Videos */}
+          <div className="flex-1 flex flex-col">
+            {/* <Notifications
             className="w-full absolute z-50 flex flex-col items-center"
           /> */}
-          <div
-            className={classNames(
-              'row-span-1 flex justify-center bg-black',
-              !showChat && ''
-            )}> 
-            <Speaker />
+            <div
+              className={classNames(
+                'flex-1 bg-black flex justify-center',
+                !showChat && ''
+              )}>
+              <Speaker />
+            </div>
+            <div
+              className={classNames(
+                'flex-none bg-blue-500',
+                !showChat && ''
+              )}>
+              <Participants />
+            </div>
           </div>
-          <div
-            className={classNames(
-              'row-span-1 bg-blue-500',
-              !showChat && ''
-            )}>
-            <Participants />
-          </div>
-        </div>
-        {showChat && (
-          <div className="col-span-1 bg-yellow-500 ">
-            <Chat />
-          </div>
-        )}
+          {showChat && (
+            <div className="flex-none flex flex-col bg-geomain overflow-hidden bg-geomain">
+              <Chat />
+            </div>
+          )}
         </div>
       </div>
     </div>

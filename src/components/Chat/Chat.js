@@ -11,7 +11,7 @@ import MessageForm from './MessageForm';
 
 function Chat() {
   return (
-    <div className="">
+    <div className="flex-1 flex flex-col bg-geomain overflow-hidden">
       <MessagesList />
       <MessageForm />
     </div>

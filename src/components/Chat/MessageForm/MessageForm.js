@@ -25,21 +25,17 @@ function MessageForm() {
   return (
     <form
       data-testid="chatbox"
-      className="w-full h-12 p-1 bg-yellow-500 border-t"
+      className="p-2 flex-none bg-geomain border-t flex flex-row"
       onSubmit={(event) => handleSubmit(event, dispatch, textInput)}>
       <input
         id="text"
         type="text"
         autoComplete="off"
-        className="appearance-none rounded w-full mr-2 px-2 py-4 focus:border-secondary focus:outline-none focus:shadow"
+        className="appearance-none rounded flex-initial mr-2 p-2 focus:border-secondary focus:outline-none focus:shadow"
         placeholder="Enter your message here"
         ref={textInput}
       />
-      <input
-        type="submit"
-        className="appearance-none rounded px-4 font-bold border-none text-white uppercase bg-secondary"
-        value="Send"
-      />
+      <button type="submit"><i class="fa fa-paper-plane text-white px-2"></i></button>
     </form>
   );
 }

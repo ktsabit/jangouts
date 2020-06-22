@@ -57,7 +57,7 @@ function MessagesList() {
   const messages = filterMessages(useSelector((state) => state.messages));
 
   return (
-    <div ref={wrapperRef} className="h-full bg-yellow-500" role="log">
+    <div ref={wrapperRef} className=" flex-1 overflow-y-scroll bg-geomain" role="log">
       <ul ref={messagesRef}>
         {messages.map((m, index) => (
           <Message key={index} onRender={updateScroll} {...m} />
